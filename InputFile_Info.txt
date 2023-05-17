@@ -1,0 +1,9 @@
+FigureType X Y Z PHI PHSI THETA SCALE_X SCALE_Y SCALE_Z RED GREEN BLUE
+
+For Pyramid X Y Z corresponds to coordinates of the left front angle(for sphere and box to the center)
+
+PHI - x axis rotation
+PHSI - y axis rotation
+THETA - z axis rotation
+
+SCALE coefficents are meant to change the shape/size of an object by stretching it 
