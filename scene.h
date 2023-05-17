@@ -8,7 +8,7 @@
 #include "Sphere.h"
 #include "LightBase.h"
 #include "PointLight.h"
-#include "Plane.h"]
+#include "Plane.h"
 #include "Box.h"
 #include "Triangle.h"
 #include "Pyramid.h"

@@ -29,6 +29,8 @@ public:
 
 	void SetPixel(const int x, const int y, const double red, const double gree, const double blue);
 
+	void save_texture(SDL_Renderer* ren, SDL_Texture* tex, const char* filename);
+
 	void Display();
 
 	int GetXSize();

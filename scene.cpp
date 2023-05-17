@@ -250,9 +250,9 @@ Scene::Scene()
   Lights.at(0)->LightLocaction = LinAlgVector{ std::vector<double> {5.0, -10.0, -5.0} };
   Lights.at(0)->LightColor = LinAlgVector{ std::vector<double> {1.0,1.0, 1.0} };
 }
-
-
-
+//
+//
+//
 
 
 
@@ -281,7 +281,7 @@ bool Scene::Render(Img& OutputImage)
 			double normY = (static_cast<double>(y) * yFact) - 1.0;
 
 			// Generate the ray for this pixel.
-			SceneCamera.GenerateRay(normX, normY, cameraRay);
+			SceneCamera.GenerateRay((float)normX, (float)normY, cameraRay);
 
 			// Test for intersections with all objects in the scene.
 			std::shared_ptr<Figure> closestObject;

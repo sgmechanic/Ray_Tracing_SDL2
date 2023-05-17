@@ -76,8 +76,8 @@ LinAlgMatrix::LinAlgMatrix() // Creates Unitary 4*4 matrix
 }
 LinAlgMatrix::LinAlgMatrix(std::vector<std::vector<double>> InputData) // Creates matrix from given data
 {
-	M = InputData.size();
-	N = InputData.at(0).size();
+	M = (int)InputData.size();
+	N = (int)InputData.at(0).size();
 	SetData(InputData);
 }
 LinAlgMatrix::~LinAlgMatrix() {};
@@ -198,7 +198,7 @@ bool LinAlgMatrix::IsIdentityMatrix()
 	}
 	for (int i = 0; i < M; i++)
 		for (int j = 0; j < N; j++)
-			if ((Data.at(i).at(j) !=0 and i!=j) || (Data.at(i).at(j)!=1 and i == j))
+			if ((Data.at(i).at(j) !=0 && i!=j) || (Data.at(i).at(j)!=1 && i == j))
 				return false;
 	return true;
 }
@@ -273,13 +273,15 @@ LinAlgVector LinAlgMatrix::operator*(const LinAlgVector& prod) const
 {
 	if (N != prod.GetDims())
 		throw std::invalid_argument("The Matrix and Vector product is not defined for this input");
-	std::vector<double> ResVect(GetM(), 0);
+	//std::vector<double> ResVect(GetM(), 0);
+	LinAlgVector result{ GetM() };
 	for (int i = 0; i < M; i++) {
 		for (int j = 0; j < N; j++) {
-				ResVect[i] += prod.GetElement(j) * Data.at(i).at(j);
+				result[i] += prod.GetElement(j) * Data.at(i).at(j);
 			}
 		}
-	return LinAlgVector(ResVect);
+	return result;
+	//return LinAlgVector(ResVect);
 }
 
 LinAlgMatrix LinAlgMatrix::operator+(const LinAlgMatrix& sum) const

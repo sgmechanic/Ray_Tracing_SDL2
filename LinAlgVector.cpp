@@ -11,13 +11,13 @@ LinAlgVector::LinAlgVector(int NumDims)
 }
 LinAlgVector::LinAlgVector(std::vector<double> InputData)
 {
-	Dims = InputData.size();
+	Dims = (int)InputData.size();
 	Data = InputData;
 }
 LinAlgVector::LinAlgVector(const LinAlgVector& Copy)
 {
 	Dims = Copy.Dims;
-	Data.resize(Copy.Data.size()); // It's not really necessary, although I should check if it boosts performance
+	//Data.resize(Copy.Data.size()); // It's not really necessary, although I should check if it boosts performance
 	Data = Copy.Data;
 }
 LinAlgVector::~LinAlgVector() {};

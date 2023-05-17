@@ -21,7 +21,7 @@ bool Sphere::TestIntersections(const Ray& CastRay, LinAlgVector& IntPoint, LinAl
 	LinAlgVector poi;
 	if (D > 0.0)
 	{
-		double numSQRT = sqrtf(D);
+		double numSQRT = sqrt(D);
 		double t1 = (-b + numSQRT) / 2.0;
 		double t2 = (-b - numSQRT) / 2.0;
 
