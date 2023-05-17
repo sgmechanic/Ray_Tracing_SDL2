@@ -32,9 +32,3 @@ bool Figure::AssignMaterial(const std::shared_ptr<MaterialBase>& ObjectMaterial)
 	return HasMaterial;
 }
 
-//bool Figure::AssignMaterial(const std::shared_ptr<MaterialBase>& FigureMaterial)
-//{
-//	Material = FigureMaterial;
-//	FigureHasMaterial = true;
-//	return FigureHasMaterial;
-//}

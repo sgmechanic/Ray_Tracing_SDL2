@@ -6,8 +6,8 @@
 class FactorySphere : public Factory {
 public:
     FactorySphere() {};
-    Figure* Create() override {
-        return new Sphere();
+    std::shared_ptr<Figure> Create() override {
+        return std::make_shared<Sphere>();
     }
     ~FactorySphere() {};
 };

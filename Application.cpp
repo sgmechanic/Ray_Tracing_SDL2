@@ -11,12 +11,12 @@ bool App::OnInit()
 {
 	if (SDL_INIT_EVERYTHING < 0)
 		return false;
-	pWindow = SDL_CreateWindow("RayTracing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 200, 200, SDL_WINDOW_SHOWN);
+	pWindow = SDL_CreateWindow("RayTracing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 400, 400, SDL_WINDOW_SHOWN);
 	if (pWindow != nullptr)
 	{
 		pRenderer = SDL_CreateRenderer(pWindow, -1, 0);
 
-		Image.Init(200, 200, pRenderer);
+		Image.Init(400, 400, pRenderer);
 
 		SDL_SetRenderDrawColor(pRenderer, 255, 255, 255, 255);
 		SDL_RenderClear(pRenderer);
@@ -65,15 +65,7 @@ void App::OnLoop()
 
 void App::OnRender()
 {
-	//SDL_SetRenderDrawColor(pRenderer, 255, 255, 255, 255); // Setting the background color to white
-	//SDL_RenderClear(pRenderer);
 
-	//scene.Render(Image);
-
-	//Image.Display();
-
-	//Show the result
-	//SDL_RenderPresent(pRenderer);
 }
 
 void App::OnExit()

@@ -7,9 +7,9 @@
 class FactoryBox : public Factory {
 public:
     FactoryBox() {};
-    Figure* Create() override {
-        return new Box();
+    std::shared_ptr<Figure> Create() override {
+        return std::make_shared<Box>();
     }
     ~FactoryBox() {};
 };
-#endif
+#endif 

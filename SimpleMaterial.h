@@ -17,10 +17,5 @@ public:
 		double reflectivity = 0.0;
 		double shininess = 0.0;
 };
-
-
-
-
-
 #endif
 

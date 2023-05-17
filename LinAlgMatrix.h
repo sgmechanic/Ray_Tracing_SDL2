@@ -1,7 +1,6 @@
 #ifndef LINALGMATRIX_H
 #define LINALGMATRIX_H
 #include <stdexcept>
-//#include "Header.h"
 #include <vector>
 #include <iostream>
 #include <math.h>
@@ -26,14 +25,10 @@ public:
 
 	int GetM() const;
 	int GetN() const;
-	//double GetElement(int index) const;
-	//void SetElement(int index, double value); insteal let's use operator[] with double&
 
-	double Determinant(); //Not needed?
+	//double Determinant();
 
-	//LinAlgMatrix Inversed();
 	bool Join(const LinAlgMatrix& matrix2);
-	bool Inverse(); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! SOMETHING IS WRONG !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 	void PrintMatrix();
 	bool SimpleInverse();
 
@@ -49,7 +44,6 @@ public:
 	double GetElem(int i, int j) const;
 
 	static LinAlgMatrix MatrixProduct(const LinAlgMatrix& a, const LinAlgMatrix& b);
-	//static double dot(const LinAlgVector& a, const LinAlgVector& b);
 
 	int FindRowWithMaxElem(int ColNumber, int StartingRow) const;
 

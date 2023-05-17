@@ -1,11 +1,8 @@
-//class Figure;
-//class LinAlgMatrix;
 #ifndef GTFORM_H
 #define GTFORM_H
 #include "LinAlgMatrix.h"
 #include "Ray.h"
 #include "LinAlgVector.h"
-//#include "Figure.h"
 
 constexpr bool FWDTFORM = true;
 constexpr bool BCKTFORM = false;
@@ -39,7 +36,6 @@ public:
 	void ExtractLinearTransform();
 
 	static void PrintVector(const LinAlgVector& vector);
-//
 private:
 	LinAlgMatrix FwdTfm{ 4,4 };
 	LinAlgMatrix BckTfm{ 4,4 };

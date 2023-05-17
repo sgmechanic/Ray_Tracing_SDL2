@@ -11,6 +11,7 @@ Box::~Box()
 
 }
 
+//Optimized function for box(Much better than 6 separate planes)
 bool Box::TestIntersections(const Ray& CastRay, LinAlgVector& IntPoint, LinAlgVector& LocalNormal, LinAlgVector& LocalColor)
 {
 	Ray BckRay = TransformMatrix.Apply(CastRay, BCKTFORM);
@@ -130,8 +131,6 @@ bool Box::TestIntersections(const Ray& CastRay, LinAlgVector& IntPoint, LinAlgVe
 		IntPoint = TransformMatrix.Apply(poi, FWDTFORM);
 
 		LocalNormal = TransformMatrix.ApplyNorm(normalVector);
-		//std::cout << "vector:" << "\n";
-		//LocalNormal.PrintVector();
 		LocalNormal.Normalize();
 
 		LocalColor = BaseColor;

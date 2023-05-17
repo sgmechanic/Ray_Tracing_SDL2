@@ -20,9 +20,7 @@ class Scene {
 private:
 	Camera SceneCamera;
 	std::vector<std::shared_ptr<Figure>> Figures;
-	std::vector<Figure*> FiguresInput;
 	std::vector<std::shared_ptr<LightBase>> Lights;
-	//Sphere TestSphere;
 public:
 	Scene();
 	bool Render(Img& OutputImage);

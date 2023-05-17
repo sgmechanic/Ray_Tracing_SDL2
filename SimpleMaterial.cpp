@@ -26,6 +26,7 @@ LinAlgVector SimpleMaterial::ComputeColor(const std::vector<std::shared_ptr<Figu
 	return matColor;
 }
 
+//Implementation of model
 LinAlgVector SimpleMaterial::ComputeSpecular(const std::vector<std::shared_ptr<Figure>>& Figures, const std::vector<std::shared_ptr<LightBase>>& Lights,
 	const LinAlgVector& intPoint, const LinAlgVector& localNormal, const Ray& cameraRay)
 {

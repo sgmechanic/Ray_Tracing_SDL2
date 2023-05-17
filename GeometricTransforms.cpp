@@ -4,12 +4,12 @@ GTform::GTform()
 	FwdTfm.SetToIdentity();
 	BckTfm.SetToIdentity();
 }
-//
+
 GTform::~GTform()
 {
 
 }
-////
+
 GTform::GTform(const LinAlgMatrix& fwd, const LinAlgMatrix& bck)
 {
 	if (fwd.GetM() != 4 || fwd.GetN() != 4 || bck.GetM() != 4 || bck.GetN() != 4)
@@ -22,7 +22,7 @@ GTform::GTform(const LinAlgVector& Translation, const LinAlgVector& Rotation, co
 	SetTransform(Translation, Rotation, Scale);
 	ExtractLinearTransform();
 }
-//
+
 void GTform::SetTransform(const LinAlgVector& Translation, const LinAlgVector& Rotation, const LinAlgVector& Scale)
 {
 	LinAlgMatrix TranslationMatrix(4,4);
@@ -70,10 +70,7 @@ void GTform::SetTransform(const LinAlgVector& Translation, const LinAlgVector& R
 	BckTfm = FwdTfm;
 	BckTfm.SimpleInverse();
 
-	//LinTfm = 
-
 	ExtractLinearTransform();
-	//LinTfm.PrintMatrix();
 }
 
 LinAlgMatrix GTform::GetForward(){
@@ -172,18 +169,13 @@ void GTform::PrintVector(const LinAlgVector& InputVector)
 
 LinAlgVector GTform::ApplyNorm(const LinAlgVector& inputVector)
 {
-
-	// Apply the transform and return the result.
-	//ExtractLinearTransform();
-	//LinTfm.PrintMatrix();
-	//LinTfm.PrintMatrix();
 	LinAlgVector result = LinTfm * inputVector;
 	return result;
 }
 
 void GTform::ExtractLinearTransform()
 {
-	// Copy the linear portion of the transform.
+	// Copy the linear portion of the transform
 	for (int i = 0; i < 3; ++i)
 	{
 		for (int j = 0; j < 3; ++j)

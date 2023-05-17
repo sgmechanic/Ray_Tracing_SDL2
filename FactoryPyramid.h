@@ -6,8 +6,8 @@
 class FactoryPyramid : public Factory {
 public:
     FactoryPyramid() {};
-    Figure* Create() override {
-        return  new Pyramid();
+    std::shared_ptr<Figure> Create() override {
+        return  std::make_shared<Pyramid>();
     }
     ~FactoryPyramid() {};
 };

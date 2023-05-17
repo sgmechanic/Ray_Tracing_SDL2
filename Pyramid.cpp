@@ -18,6 +18,7 @@ bool Pyramid::TestIntersections(const Ray& CastRay, LinAlgVector& IntPoint, LinA
 	LinAlgVector BarycentricACS;
 	LinAlgVector BarycentricBCS;
 
+		//Fill matrices according to four plane equations for tetrahedron 
 		LinAlgMatrix ABC{ 4,3 };
 		ABC.Elem(0, 0) = 0;
 		ABC.Elem(1, 0) = 0;
@@ -82,10 +83,8 @@ bool Pyramid::TestIntersections(const Ray& CastRay, LinAlgVector& IntPoint, LinA
 		BCS.Elem(1, 2) = sqrt(3.0) / 6.0;
 		BCS.Elem(2, 2) = -sqrt(6.0) / 3.0;
 		BCS.Elem(3, 2) = 1;
-		//A.PrintMatrix();
 		LinAlgMatrix FirstStepBCS = (BCS.Transpose() * BCS);
 		FirstStepBCS.SimpleInverse();
-		//FirstStep.PrintMatrix();
 		LinAlgMatrix BCSFinal = FirstStepBCS * (BCS.Transpose());
 
 		Ray BckRay = TransformMatrix.Apply(CastRay, BCKTFORM);
@@ -207,32 +206,30 @@ bool Pyramid::TestIntersections(const Ray& CastRay, LinAlgVector& IntPoint, LinA
 		{
 			LinAlgVector poi = BckRay.point1 + k * finalT;
 			LinAlgVector normalVector{ 3 };
+			//Now we want to know what normal should we use
 			switch (finalIndex)
 			{
 			case 0:
-				normalVector = std::vector<double>{ 0, 0, -1.0 }; // Down.
+				normalVector = std::vector<double>{ 0, 0, -1.0 }; 
 				break;
 
 			case 1:
-				normalVector = std::vector<double>{ 0, -2 * sqrt(2) / 3.0, -1.0 / 3.0 }; // Up.
+				normalVector = std::vector<double>{ 0, -2 * sqrt(2) / 3.0, -1.0 / 3.0 }; 
 				break;
 
 			case 2:
-				normalVector = std::vector<double>{ sqrt(2.0 / 3.0), -sqrt(2) / 3.0, 1.0 / 3.0 }; // Left.
+				normalVector = std::vector<double>{ sqrt(2.0 / 3.0), -sqrt(2) / 3.0, 1.0 / 3.0 }; 
 				break;
 
 			case 3:
-				normalVector = std::vector<double>{ sqrt(2.0 / 3.0), sqrt(2) / 3.0, -1.0 / 3.0 }; // Right.
+				normalVector = std::vector<double>{ sqrt(2.0 / 3.0), sqrt(2) / 3.0, -1.0 / 3.0 }; 
 				break;
 
 			}
 			IntPoint = TransformMatrix.Apply(poi, FWDTFORM);
 
 			LocalNormal = TransformMatrix.ApplyNorm(normalVector);
-			//std::cout << "vector:" << "\n";
-			//LocalNormal.PrintVector();
 			LocalNormal.Normalize();
-
 			LocalColor = BaseColor;
 			return true;
 
@@ -243,108 +240,3 @@ bool Pyramid::TestIntersections(const Ray& CastRay, LinAlgVector& IntPoint, LinA
 		}
 
 }
-	//if (!CloseEnough(kz, 0.0))
-	//{
-	//	t[0] = az/-kz;
-	//	v[0] = 2.0*ay/sqrt(3.0) + 2.0*ky * t[0]/sqrt(3.0);
-	//	u[0] = ax + t[0] * kx - 0.5 * v[0];
-	//}
-	//else
-	//{
-	//	t[0] = 100e6;
-	//	u[0] = 0.0;
-	//	v[0] = 0.0;
-	//}
-	//if (!CloseEnough(kx + ky/sqrt(3.0) - 2*kz/sqrt(6.0), 0.0))
-	//{
-	//	t[1] = (1 - ax - ay/sqrt(3.0) +2*az/sqrt(6.0))/(kx + ky / sqrt(3.0) - 2 * kz / sqrt(6.0));
-	//	u[1] = -3 * az / sqrt(6.0) - 3 * kz * t[1] / sqrt(6.0);
-	//	v[1] = 2 * ay / sqrt(3.0) + 2 * ky * t[1] / sqrt(3.0) - u[1] / 3;
-	//}
-	//else
-	//{
-	//	t[1] = 100e6;
-	//	u[1] = 0.0;
-	//	v[1] = 0.0;
-	//}
-	//if (!CloseEnough(ky + kz * 3 * sqrt(3.0)/ (6.0 * sqrt(6.0)), 0.0))
-	//{
-	//	t[0] = (-ay - az*3 * sqrt(3.0) / (6.0 * sqrt(6.0)))/ (ky + kz * 3 * sqrt(3.0) / (6.0 * sqrt(6.0)));
-	//	v[0] = -3*az/sqrt(6.0) - 3*kz*t[2]/sqrt(6.0);
-	//	u[0] = ax + kx*t[2] - v[2] / 2.0;
-	//}
-	//else
-	//{
-	//	t[0] = 100e6;
-	//	u[0] = 0.0;
-	//	v[0] = 0.0;
-	//}
-	//if (!CloseEnough(kx - kz/sqrt(6.0) - ky/sqrt(3.0), 0.0))
-	//{
-	//	t[3] = (az/sqrt(6.0) + ay/sqrt(3.0) - ax)/(kx - kz / sqrt(6.0) - ky / sqrt(3.0));
-	//	u[3] = 3*t[3]*kz/sqrt(6.0) + 3*az/sqrt(6.0);
-	//	v[3] = 2*ay/sqrt(3.0)-u[3]/3.0+2*t[3]*ky/sqrt(3.0);
-	//}
-	//else
-	//{
-	//	t[3] = 100e6;
-	//	u[3] = 0.0;
-	//	v[3] = 0.0;
-	//}
-	//double finalU = 0.0;
-	//double finalV = 0.0;
-	//double finalT = 100e6;
-	//int finalIndex = 0;
-	//bool ValidIntersection = false;
-	//for (int i = 0; i < 1; ++i)
-	//{
-	//	if ((t[i] < finalT) && (t[i] > 0.0) && (u[i] >= 0) && (v[i] >= 0.0) && (u[i] +v[i] <= 1))
-	//	{
-	//		finalT = t[i];
-	//		finalIndex = i;
-	//		finalU = u[i];
-	//		finalV = v[i];
-	//		ValidIntersection = true;
-	//	}
-	//}
-	//if (ValidIntersection)
-	//{
-	//	LinAlgVector poi = BckRay.point1 + k * finalT;
-	//	LinAlgVector normalVector{ 3 };
-	//	switch (finalIndex)
-	//	{
-	//	case 0:
-	//		//normalVector = std::vector<double>{ 0.0, 0.0, 1.0 }; // Down.
-	//		normalVector = std::vector<double>{ -NormalVect3.GetElement(0),-NormalVect3.GetElement(1),-NormalVect3.GetElement(2) };
-	//		break;
-
-		//case 1:
-		//	normalVector = std::vector<double>{NormalVect3.GetElement(0),NormalVect3.GetElement(1), NormalVect3.GetElement(2) }; // Up.
-		//	break;
-
-		//case 2:
-		//	normalVector = std::vector<double>{ NormalVect3.GetElement(0),NormalVect3.GetElement(1),NormalVect3.GetElement(2) }; // Left.
-		//	break;
-		//case 2:
-		//	normalVector = std::vector<double>{ NormalVect4.GetElement(0),NormalVect4.GetElement(1),NormalVect4.GetElement(2) }; // Right.
-		//	break;
-
-//		}
-//
-//		IntPoint = TransformMatrix.Apply(poi, FWDTFORM);
-//
-//		LocalNormal = TransformMatrix.ApplyNorm(normalVector);
-//		//std::cout << "vector:" << "\n";
-//		//LocalNormal.PrintVector();
-//		LocalNormal.Normalize();
-//
-//		LocalColor = BaseColor;
-//		return true;
-//
-//	}
-//	else
-//	{
-//		return false;
-//	}
-//
-//}

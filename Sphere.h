@@ -1,7 +1,6 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 #include "Figure.h"
-//#include "GeometricTransforms.h"
 class Sphere : public Figure
 {
 private:

@@ -17,7 +17,6 @@ public:
 
 	int GetDims() const;
 	double GetElement(int index) const;
-	//void SetElement(int index, double value); insteal let's use operator[] with double&
 
 	double norm() const ;
 
@@ -29,7 +28,6 @@ public:
 	LinAlgVector operator- (const LinAlgVector& dif) const;
 	LinAlgVector operator* (double coef) const;
 	LinAlgVector operator= (const LinAlgVector& eq);
-	//LinAlgVector operator*(const LinAlgMatrix& prod) const;
 	double& operator[](size_t index);
 
 	static LinAlgVector cross(const LinAlgVector& a, const LinAlgVector& b);

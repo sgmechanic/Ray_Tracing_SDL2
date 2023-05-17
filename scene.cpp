@@ -5,40 +5,39 @@
 #include "FactoryBox.h"
 #include "FactorySphere.h"
 #include <omp.h>
-//#include <fstream>
-//#include <map>
-
+#include <fstream>
+#include <map>
 
 
 //JUST ONE SPHERE
-Scene::Scene()
-{
-	auto testMaterial3 = std::make_shared<SimpleMaterial>(SimpleMaterial());
-	testMaterial3->BaseColor = LinAlgVector{ std::vector<double>{0.7, 0.6, 0.6} };
-	testMaterial3->reflectivity = 0.25;
-	testMaterial3->shininess = 10.0;
-
-SceneCamera.SetPosition(LinAlgVector{ std::vector<double> {0.0, -10.0, -1.0} });
-SceneCamera.SetLookAt(LinAlgVector{ std::vector<double> {0.0, 0.0, 0.0} });
-SceneCamera.SetUp(LinAlgVector{ std::vector<double> {0.0, 0.0, 1.0} });
-SceneCamera.SetHoriSize(0.25);
-SceneCamera.SetAspect(16.0 / 9.0);
-SceneCamera.UpdateCameraGeometry();
-
-Figures.push_back(std::make_shared<Sphere>(Sphere()));
-
-
-Figures.at(0)->AssignMaterial(testMaterial3);
-//Figures.at(0)->BaseColor = LinAlgVector{ std::vector<double>{0.3, 0.6, 0.9} };
-
-
-GTform testMatrix1(LinAlgVector{ std::vector<double>{-1.0, 0.0, 0.0} }, LinAlgVector{ std::vector<double>{1.2, 0.8, 0.8} }, LinAlgVector{ std::vector<double>{0.5, 0.5, 0.5} });
-Figures.at(0)->SetTransformMatrix(testMatrix1);
-
-Lights.push_back(std::make_shared<PointLight>(PointLight()));
-Lights.at(0)->LightLocaction = LinAlgVector{ std::vector<double> {5.0, -10.0, -5.0} };
-Lights.at(0)->LightColor = LinAlgVector{ std::vector<double> {1.0,1.0, 1.0} };
-}
+//Scene::Scene()
+//{
+//	auto testMaterial3 = std::make_shared<SimpleMaterial>(SimpleMaterial());
+//	testMaterial3->BaseColor = LinAlgVector{ std::vector<double>{0.7, 0.6, 0.6} };
+//	testMaterial3->reflectivity = 0.25;
+//	testMaterial3->shininess = 10.0;
+//
+//SceneCamera.SetPosition(LinAlgVector{ std::vector<double> {0.0, -10.0, -1.0} });
+//SceneCamera.SetLookAt(LinAlgVector{ std::vector<double> {0.0, 0.0, 0.0} });
+//SceneCamera.SetUp(LinAlgVector{ std::vector<double> {0.0, 0.0, 1.0} });
+//SceneCamera.SetHoriSize(0.25);
+//SceneCamera.SetAspect(16.0 / 9.0);
+//SceneCamera.UpdateCameraGeometry();
+//
+//Figures.push_back(std::make_shared<Sphere>(Sphere()));
+//
+//
+//Figures.at(0)->AssignMaterial(testMaterial3);
+////Figures.at(0)->BaseColor = LinAlgVector{ std::vector<double>{0.3, 0.6, 0.9} };
+//
+//
+//GTform testMatrix1(LinAlgVector{ std::vector<double>{-1.0, 0.0, 0.0} }, LinAlgVector{ std::vector<double>{1.2, 0.8, 0.8} }, LinAlgVector{ std::vector<double>{0.5, 0.5, 0.5} });
+//Figures.at(0)->SetTransformMatrix(testMatrix1);
+//
+//Lights.push_back(std::make_shared<PointLight>(PointLight()));
+//Lights.at(0)->LightLocaction = LinAlgVector{ std::vector<double> {5.0, -10.0, -5.0} };
+//Lights.at(0)->LightColor = LinAlgVector{ std::vector<double> {1.0,1.0, 1.0} };
+//}
 
 
 
@@ -151,7 +150,7 @@ Lights.at(0)->LightColor = LinAlgVector{ std::vector<double> {1.0,1.0, 1.0} };
 //
 //
 //// Modify the spheres.
-//GTform testMatrix1(LinAlgVector{ std::vector<double>{-2.0, 0.0, 0.5} },
+//GTform testMatrix1(LinAlgVector{ std::vector<double>{-2.0, 1.0, 0.5} },
 //	LinAlgVector{ std::vector<double>{ 0.4, 0.1, 0.0} },
 //	LinAlgVector{ std::vector<double>{1.2, 1.2, 1.2} }), 
 //	//testMatrix2(LinAlgVector{ std::vector<double>{0.0, 0.0, 0.0} },
@@ -206,16 +205,52 @@ Lights.at(0)->LightColor = LinAlgVector{ std::vector<double> {1.0,1.0, 1.0} };
 
 
 
-//bool Scene::Render(Img& OutputImage)
-//{
-//	for (int i = 0; i < 100; i++)
-//		for (int j = 0; j < 100; j++)
-//		{
-//			OutputImage.SetPixel(i, j, 0.0, 0.0, 1.0);
-//		}
-//	return true;
-//
-//}
+
+Scene::Scene()
+{
+	SceneCamera.SetPosition(LinAlgVector{ std::vector<double> {0.0, -10.0, -1.0} });
+	SceneCamera.SetLookAt(LinAlgVector{ std::vector<double> {0.0, 0.0, 0.0} });
+	SceneCamera.SetUp(LinAlgVector{ std::vector<double> {0.0, 0.0, 1.0} });
+	SceneCamera.SetHoriSize(0.25);
+	SceneCamera.SetAspect(16.0 / 9.0);
+	SceneCamera.UpdateCameraGeometry();
+
+  const std::string fileName = "Data.txt";
+  std::ifstream InputFile(fileName);
+  if (!InputFile.is_open()) {
+    std::cout << "No acces to data";
+    exit(0);
+  }
+  std::map<std::string, Factory*> Our_map;
+  Our_map["Sphere"] = new FactorySphere;
+  Our_map["Box"] = new FactoryBox;
+  Our_map["Pyramid"] = new FactoryPyramid;
+  std::string line;
+  while (InputFile >> line) {
+    //InputFile >> line;
+    auto curFactory = Our_map.find(line);
+    if (!line.empty()) {
+      if (curFactory == Our_map.end()) {
+        std::cout << "Error! Wrong Data in Input!\n";
+        exit(0);
+      }
+    }
+	Figures.push_back(curFactory->second->Create());
+	double x, y, z, phi, phsi, theta, scale_x, scale_y, scale_z, r, g, b;
+	InputFile  >> x >> y >> z >> phi >> phsi >> theta >> scale_x >> scale_y >> scale_z >> r >> g >> b;
+	GTform TF(LinAlgVector{ std::vector<double>{x, y, z} }, LinAlgVector{ std::vector<double>{phi, phsi, theta} }, LinAlgVector{ std::vector<double>{scale_x, scale_y, scale_z} });
+	  auto testMaterial = std::make_shared<SimpleMaterial>(SimpleMaterial());
+     testMaterial->BaseColor = LinAlgVector{ std::vector<double>{r, g, b} };
+     testMaterial->reflectivity = 0.25;
+     testMaterial->shininess = 10.0;
+     Figures.at(Figures.size() - 1)->SetTransformMatrix(TF);
+     Figures.at(Figures.size() - 1)->AssignMaterial(testMaterial);
+  }
+  Lights.push_back(std::make_shared<PointLight>(PointLight()));
+  Lights.at(0)->LightLocaction = LinAlgVector{ std::vector<double> {5.0, -10.0, -5.0} };
+  Lights.at(0)->LightColor = LinAlgVector{ std::vector<double> {1.0,1.0, 1.0} };
+}
+
 
 
 
@@ -224,11 +259,9 @@ Lights.at(0)->LightColor = LinAlgVector{ std::vector<double> {1.0,1.0, 1.0} };
 
 bool Scene::Render(Img& OutputImage)
 {
-	// Get the dimensions of the output image.
 	int xSize = OutputImage.GetXSize();
 	int ySize = OutputImage.GetYSize();
 
-	// Loop over each pixel in our image.
 	Ray cameraRay;
 	LinAlgVector intPoint(3);
 	LinAlgVector localNormal(3);
@@ -238,6 +271,7 @@ bool Scene::Render(Img& OutputImage)
 	double minDist = 1e6;
 	double maxDist = 0.0;
 
+	//All pixels loop
 	for (int x = 0; x < xSize; ++x)
 	{
 		for (int y = 0; y < ySize; ++y)
@@ -255,8 +289,7 @@ bool Scene::Render(Img& OutputImage)
 			LinAlgVector closestLocalNormal{3};
 			LinAlgVector closestLocalColor{3};
 			bool intersectionFound = CastRay(cameraRay, closestObject, closestIntPoint, closestLocalNormal, closestLocalColor);
-			/* Compute the illumination for the closest object, assuming that there
-				was a valid intersection. */
+			//illumination for the closest object
 			if (intersectionFound)
 			{
 				if (closestObject->HasMaterial)
@@ -267,10 +300,6 @@ bool Scene::Render(Img& OutputImage)
 				else
 				{
 					LinAlgVector matColor = MaterialBase::ComputeDiffuseColor(Figures, Lights, closestObject, closestIntPoint, closestLocalNormal, closestObject->BaseColor);
-					//if (matColor.GetElement(0) > matColor.GetElement(1) && matColor.GetElement(0) > matColor.GetElement(2))
-					//{
-					//matColor.PrintVector();
-					//}
 					OutputImage.SetPixel(x, y, matColor.GetElement(0), matColor.GetElement(1), matColor.GetElement(2));
 		
 				}
@@ -298,14 +327,12 @@ bool Scene::CastRay(Ray& CastRay, std::shared_ptr<Figure>& ClosestFigure, LinAlg
 		// If we have a valid intersection.
 		if (validInt)
 		{
-			// Set the flag to indicate that we found an intersection.
 			intersectionFound = true;
 
-			// Compute the distance between the camera and the point of intersection.
+			// Distance between the camera and the point of intersection.
 			double dist = (intPoint - CastRay.point1).norm();
 
-			/* If this object is closer to the camera than any one that we have
-				seen before, then store a reference to it. */
+			// Update cureentObject  
 			if (dist < minDist)
 			{
 				minDist = dist;

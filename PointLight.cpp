@@ -14,20 +14,19 @@ PointLight::~PointLight()
 bool PointLight::ComputeIllumination(const LinAlgVector& intPoint, const LinAlgVector& localNormal,
 	const std::vector<std::shared_ptr<Figure>>& objectList,
 	const std::shared_ptr<Figure>& currentObject,
-	LinAlgVector& color, double& intensity) //CHANGE HERE KILLS PERFORMANCE :(((
+	LinAlgVector& color, double& intensity) 
 {
 	// Construct a vector pointing from the intersection point to the light.
 	LinAlgVector lightDir = (LightLocaction - intPoint).Normalized();
 	double lightDist = (LightLocaction - intPoint).norm();
 
-	// Compute a starting point.
+	// Starting point
 	LinAlgVector startPoint = intPoint;
 
-	// Construct a ray from the point of intersection to the light.
+	// Construct a ray from the Intpoint to the light
 	Ray lightRay(startPoint, startPoint + lightDir);
 
-	/* Check for intersections with all of the objects
-		in the scene, except for the current one. */
+	//Skip currentObject
 	LinAlgVector poi{ 3 };
 	LinAlgVector poiNormal{ 3 };
 	LinAlgVector poiColor{ 3 };
@@ -43,25 +42,21 @@ bool PointLight::ComputeIllumination(const LinAlgVector& intPoint, const LinAlgV
 				if (dist > lightDist)
 					validInt = false;
 			}*/
+			//This if may be needed, should be tested
 		}
 
-		/* If we have an intersection, then there is no point checking further
-			so we can break out of the loop. In other words, this object is
+		/* This object is
 			blocking light from this light source. */
 		if (validInt)
 			break;
 	}
-
-	/* Only continue to compute illumination if the light ray didn't
-		intersect with any objects in the scene. Ie. no objects are
-		casting a shadow from this light source. */
 	if (!validInt)
 	{
-		// Compute the angle between the local normal and the light ray.
-		// Note that we assume that localNormal is a unit vector.
+		//angle between the local normal and the light ray
+		//we assume that localNormal is a unit vector
 		double angle = acos(LinAlgVector::dot(localNormal, lightDir));
 
-		// If the normal is pointing away from the light, then we have no illumination.
+		// If the normal is pointing away from the light, then we have no illumination
 		if (angle > 1.5708)
 		{
 			// No illumination.
@@ -89,33 +84,3 @@ bool PointLight::ComputeIllumination(const LinAlgVector& intPoint, const LinAlgV
 
 
 
-
-//bool PointLight::ComputeIllumination(const LinAlgVector& IntPoint, const LinAlgVector& LocalNormal, const std::vector<std::shared_ptr<Figure>>& Figures,
-//	const std::shared_ptr<Figure>& CurrentFigure, LinAlgVector& color, double& intensity)
-//{
-//	//std::cout << "before:" << "\n";
-//	//(LightLocaction - IntPoint).PrintVector();
-//	LinAlgVector LightDir = (LightLocaction - IntPoint).Normalized();
-//	//std::cout << "after:" << "\n";
-//	//LightDir.PrintVector();
-//
-//	LinAlgVector StartPoint = IntPoint; //We will see why it's useful later
-//
-//	//We assume that LocalNorm is a unit vector. It simplifies denominator
-//	double angle = acos(LinAlgVector::dot(LocalNormal, LightDir));
-//	if (angle < 1.5708)
-//		//std::cout << "check:" << angle << "\n";
-//
-//	if (angle > 1.5708)
-//	{
-//		color = LightColor;
-//		intensity = 0.0;
-//		return false;
-//	}
-//	else
-//	{
-//		color = LightColor;
-//		intensity = LightIntensity * (1.0 - (angle / 1.5708));
-//		return true;
-//	}
-//}

@@ -15,7 +15,4 @@ private:
 	std::array<double, 6> u;
 	std::array<double, 6> v;
 };
-
-
-
 #endif
